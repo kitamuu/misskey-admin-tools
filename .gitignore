@@ -1,0 +1,10 @@
+# Node.js
+node_modules
+report.*.json
+
+# pnpm
+.pnpm-store
+
+# config
+/.config/*
+!/.config/example.yml
