@@ -13,7 +13,15 @@ export const formattedDate: string = (() => {
   }
 })();
 
-export const elapsedTime = () => {
-  return new Date() - today;
+export const elapsedTime: string = () => {
+  const ms = new Date() - today;
+  const tsec = Math.floor(ms / 1000);
+  const min = Math.floor(tsec / 60);
+  const sec = tsec % 60;
+  if (tsec == 0) {
+    return `${ms}ms`;
+  } else {
+    return `${min} min ${sec} sec`;
+  }
 };
 
