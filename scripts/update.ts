@@ -14,16 +14,16 @@ console.log(massage);
 massage = execSync(`sudo -u misskey git -C ~misskey/misskey checkout ${process.argv[2]}`).toString();
 console.log(massage);
 
-massage = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; NODE_ENV=production pnpm install --frozen-lockfile').toString();
+massage = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; NODE_ENV=production pnpm install --frozen-lockfile"').toString();
 console.log(massage);
 
-massage = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; pnpm run clean').toString();
+massage = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; pnpm run clean"').toString();
 console.log(massage);
 
-massage = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; NODE_ENV=production pnpm run build').toString();
+massage = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; NODE_ENV=production pnpm run build"').toString();
 console.log(massage);
 
-massage = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; pnpm run migrate').toString();
+massage = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; pnpm run migrate"').toString();
 console.log(massage);
 
 massage = execSync('systemctl start misskey').toString();
