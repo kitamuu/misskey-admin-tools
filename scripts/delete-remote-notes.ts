@@ -31,9 +31,11 @@ console.log(`Will delete remote notes before ${formattedDate}.`);
         protectedNoteIds = protectedNoteIds.filter(id => id !== note.id);
       }
     } else {
-      // フォロー外でもReplyとRenoteしたNoteは残す
+      // フォロー外でもRenoteとReplyされたNoteは残す
       if (protectedNoteIds.includes(note.id)) {
         protectedNoteIds = protectedNoteIds.filter(id => id !== note.id);
+      // フォロー外でもmentionされたNoteは残す
+      } else if (note.mentions.filter(id => protectedUserIds.includes(id)).length > 0) {
       } else {
         await dao.deleteNote(note.id);
         deleteCount++;

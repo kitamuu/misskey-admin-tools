@@ -45,7 +45,7 @@ export class Dao {
   }
 
   public async notes(uptoDate: string): Promise<{}[]> {
-    const selectQuery: string = "SELECT id, \"replyId\", \"renoteId\", \"userId\" FROM public.note WHERE \"createdAt\" < $1 ORDER BY \"createdAt\" DESC";
+    const selectQuery: string = "SELECT id, \"replyId\", \"renoteId\", \"userId\", \"mentions\" FROM public.note WHERE \"createdAt\" < $1 ORDER BY \"createdAt\" DESC";
     const selectRes = await client.query(selectQuery, [uptoDate]);
 
     return selectRes.rows;
