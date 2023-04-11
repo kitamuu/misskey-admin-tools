@@ -61,4 +61,39 @@ export class Dao {
   public async deleteNote(id: string): Promise<void> {
     await client.query("DELETE FROM public.note WHERE id = $1", [id]);
   }
+
+  public async deleteChartPerUserDrive(protectedUserIds: string[]): Promise<int> {
+    const deleteQuery: string = "DELETE FROM public.__chart__per_user_drive WHERE NOT(\"group\" = any($1::varchar[]))";
+    const deleteRes = await client.query({ text: deleteQuery, values: [protectedUserIds] });
+    return deleteRes.rowCount;
+  }
+
+  public async deleteChartPerUserReaction(protectedUserIds: string[]): Promise<int> {
+    const deleteQuery: string = "DELETE FROM public.__chart__per_user_reaction WHERE NOT(\"group\" = any($1::varchar[]))";
+    const deleteRes = await client.query({ text: deleteQuery, values: [protectedUserIds] });
+    return deleteRes.rowCount;
+  }
+
+  public async deleteChartPerUserNotes(protectedUserIds: string[]): Promise<int> {
+    const deleteQuery: string = "DELETE FROM public.__chart__per_user_notes WHERE NOT(\"group\" = any($1::varchar[]))";
+    const deleteRes = await client.query({ text: deleteQuery, values: [protectedUserIds] });
+    return deleteRes.rowCount;
+  }
+
+  public async deleteChartDayPerUserDrive(protectedUserIds: string[]): Promise<int> {
+    const deleteQuery: string = "DELETE FROM public.__chart_day__per_user_drive WHERE NOT(\"group\" = any($1::varchar[]))";
+    const deleteRes = await client.query({ text: deleteQuery, values: [protectedUserIds] });
+    return deleteRes.rowCount;
+  }
+
+  public async deleteChartDayPerUserNotes(protectedUserIds: string[]): Promise<int> {
+    const deleteQuery: string = "DELETE FROM public.__chart_day__per_user_notes WHERE NOT(\"group\" = any($1::varchar[]))";
+    const deleteRes = await client.query({ text: deleteQuery, values: [protectedUserIds] });
+    return deleteRes.rowCount;
+  }
+  public async deleteChartDayPerUserReaction(protectedUserIds: string[]): Promise<int> {
+    const deleteQuery: string = "DELETE FROM public.__chart_day__per_user_reaction WHERE NOT(\"group\" = any($1::varchar[]))";
+    const deleteRes = await client.query({ text: deleteQuery, values: [protectedUserIds] });
+    return deleteRes.rowCount;
+  }
 }

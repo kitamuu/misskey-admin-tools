@@ -15,6 +15,10 @@ misskey v13が動いている環境であれば大丈夫なはず
 
   - Run `sudo pnpx tsx scripts/update.ts 13.x.x`
 
+- (レコードが多い)chart系テーブルからリモートユーザのレコードを削除:
+
+  - Run `pnpx tsx scripts/delete-remote-user-charts.ts`
+
 - 指定年月日より過去の自鯖のアカウントとそれらがフォローしているアカウントのNote、
 およびRenoteしたNoteとreply、mentionがあったNoteを残して消す:
 
