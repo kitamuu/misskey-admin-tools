@@ -17,7 +17,7 @@ misskey v13が動いている環境であれば大丈夫なはず
 
   - Run `sudo pnpx tsx scripts/update.ts 13.x.x`
 
-- あまり使われてなさそうな(updatedAtがnull)userのレコードを削除:
+- あまり使われてなさそうな(lastFetchedAtが一年以上前の)userのレコードを削除:
 
   - Run `pnpx tsx scripts/delete-unused-users.ts`
 

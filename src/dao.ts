@@ -33,9 +33,9 @@ export class Dao {
     return (checkRes.rowCount == 0)
   }
 
-  public async driveFiles(uptoDate: string): Promise<{}[]> {
+  public async driveFiles(toDate: string): Promise<{}[]> {
     const selectQuery: string = "SELECT id, \"userId\" FROM public.drive_file WHERE \"createdAt\" < $1";
-    const selectRes = await client.query(selectQuery, [uptoDate]);
+    const selectRes = await client.query(selectQuery, [toDate]);
 
     return selectRes.rows;
   }
@@ -45,15 +45,17 @@ export class Dao {
   }
 
   public async deleteUnusedUsers(): Promise<int> {
-    const deleteQuery: string = "DELETE FROM public.user WHERE NOT(id = any($1::varchar[])) AND \"updatedAt\" IS NULL";
+    const deleteQuery: string = "DELETE FROM public.user WHERE NOT(id = any($1::varchar[])) AND \"lastFetchedAt\" < $2";
+    const today: Date = new Date();
+    const toDate: string = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
     const protectedIds: string[] = await this.protectedUserIds();
-    const deleteRes = await client.query({ text: deleteQuery, values: [protectedIds] });
+    const deleteRes = await client.query({ text: deleteQuery, values: [protectedIds, toDate] });
     return deleteRes.rowCount;
   }
 
-  public async notes(uptoDate: string): Promise<{}[]> {
+  public async notes(toDate: string): Promise<{}[]> {
     const selectQuery: string = "SELECT id, \"replyId\", \"renoteId\", \"userId\", \"mentions\" FROM public.note WHERE \"createdAt\" < $1 ORDER BY \"createdAt\" DESC";
-    const selectRes = await client.query(selectQuery, [uptoDate]);
+    const selectRes = await client.query(selectQuery, [toDate]);
 
     return selectRes.rows;
   }
