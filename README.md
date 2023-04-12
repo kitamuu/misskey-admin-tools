@@ -1,5 +1,7 @@
 # Misskeyお一人様鯖のためのツール
 
+※実行は自己責任で
+
 ## Dependencies:
 
 misskey v13が動いている環境であれば大丈夫なはず
@@ -15,6 +17,10 @@ misskey v13が動いている環境であれば大丈夫なはず
 
   - Run `sudo pnpx tsx scripts/update.ts 13.x.x`
 
+- あまり使われてなさそうな(updatedAtがnull)userのレコードを削除:
+
+  - Run `pnpx tsx scripts/delete-unused-users.ts`
+
 - (レコードが多い)chart系テーブルからリモートユーザのレコードを削除:
 
   - Run `pnpx tsx scripts/delete-remote-user-charts.ts`
@@ -28,6 +34,7 @@ misskey v13が動いている環境であれば大丈夫なはず
 
   - Run `pnpx tsx scripts/delete-remote-notes.ts`
 
-- 指定年月日より過去のリモートユーザのアイコンと背景以外のdrive_fileのレコードを削除（※リモートファイルのキャッシュを無効にしている前提なのでアップロードファイルの削除はしません）:
+- 指定年月日より過去のリモートユーザのアイコンと背景以外のdrive_fileのレコードを削除
+（※リモートファイルのキャッシュを無効にしている前提なのでアップロードファイルの削除はしません）:
 
   - Run `pnpx tsx scripts/delete-remote-drivefiles.ts yyyy-MM-dd`

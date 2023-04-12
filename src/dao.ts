@@ -44,18 +44,18 @@ export class Dao {
     await client.query("DELETE FROM public.drive_file WHERE id = $1", [id]);
   }
 
+  public async deleteUnusedUsers(): Promise<int> {
+    const deleteQuery: string = "DELETE FROM public.user WHERE NOT(id = any($1::varchar[])) AND \"updatedAt\" IS NULL";
+    const protectedIds: string[] = await this.protectedUserIds();
+    const deleteRes = await client.query({ text: deleteQuery, values: [protectedIds] });
+    return deleteRes.rowCount;
+  }
+
   public async notes(uptoDate: string): Promise<{}[]> {
     const selectQuery: string = "SELECT id, \"replyId\", \"renoteId\", \"userId\", \"mentions\" FROM public.note WHERE \"createdAt\" < $1 ORDER BY \"createdAt\" DESC";
     const selectRes = await client.query(selectQuery, [uptoDate]);
 
     return selectRes.rows;
-  }
-
-  public async deleteNotes(uptoDate: string): Promise<int> {
-    const deleteQuery: string = "DELETE FROM public.note WHERE NOT(\"userId\" = any($1::varchar[])) and \"createdAt\" < $2";
-    const protectedIds: string[] = await this.protectedUserIds();
-    const deleteRes = await client.query({ text: deleteQuery, values: [protectedIds, uptoDate] });
-    return deleteRes.rowCount;
   }
 
   public async deleteNote(id: string): Promise<void> {
