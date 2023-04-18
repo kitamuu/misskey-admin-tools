@@ -36,14 +36,15 @@ console.log(`Will delete remote notes before ${formattedDate}.`);
         protectedNoteIds = protectedNoteIds.filter(id => id !== note.id);
       // フォロー外でもmentionされたNoteは残す
       } else if (note.mentions.filter(id => protectedUserIds.includes(id)).length > 0) {
+        // nop
       } else {
         await dao.deleteNote(note.id);
         deleteCount++;
-      }
-    }
 
-    if(deleteCount > 0 && deleteCount % delimiterNumForLog == 0){
-      console.log(`${deleteCount} notes deleted in ${elapsedTime()}. Still deleting...`);
+        if(deleteCount % delimiterNumForLog == 0) {
+          console.log(`${deleteCount} notes deleted in ${elapsedTime()}. Still deleting...`);
+        }
+      }
     }
   }
   console.log(`Finished. ${deleteCount} notes deleted in ${elapsedTime()}.`);
