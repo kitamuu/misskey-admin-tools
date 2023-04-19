@@ -8,8 +8,7 @@ export const formattedDate: string = (() => {
     }
     return targetDay;
   } else {
-    const threeMonthsAgo: Date = new Date(today.getFullYear(), today.getMonth() - 3, today.getDate());
-    return threeMonthsAgo.toISOString().slice(0, 10);
+    return new Date(today.getFullYear(), today.getMonth() - 3, today.getDate()).toLocaleDateString('sv-SE');
   }
 })();
 
