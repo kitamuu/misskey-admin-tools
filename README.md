@@ -25,12 +25,13 @@ misskey v13が動いている環境であれば大丈夫なはず
 
   - Run `pnpx tsx scripts/delete-remote-user-charts.ts`
 
-- 指定年月日より過去の自鯖のアカウントとそれらがフォローしているアカウントのNote、
-およびRenoteしたNoteとreply、mentionがあったNoteを残して消す:
+- 指定年月日より過去n日分の自鯖のアカウントとそれらがフォローしているアカウントのNote、
+およびRenoteしたNoteとReply、mentionがあったNoteを残して消します
+（※指定年月日より未来からRenote、ReplyされたNoteは消えちゃう）:
 
-  - Run `pnpx tsx scripts/delete-remote-notes.ts yyyy-MM-dd`
+  - Run `pnpx tsx scripts/delete-remote-notes.ts yyyy-MM-dd n`
 
-- 引数の指定がない場合は過去約3ヶ月分を残して消します、以下同様:
+- 引数の指定がない場合は実行日の3ヶ月前から過去30日分を消します
 
   - Run `pnpx tsx scripts/delete-remote-notes.ts`
 
@@ -38,3 +39,7 @@ misskey v13が動いている環境であれば大丈夫なはず
 （※リモートファイルのキャッシュを無効にしている前提なのでアップロードファイルの削除はしません）:
 
   - Run `pnpx tsx scripts/delete-remote-drivefiles.ts yyyy-MM-dd`
+
+- 引数の指定がない場合は実行日の3ヶ月前から過去分を消します
+
+  - Run `pnpx tsx scripts/delete-remote-drivefiles.ts`

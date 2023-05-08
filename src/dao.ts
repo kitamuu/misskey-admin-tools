@@ -53,9 +53,9 @@ export class Dao {
     return deleteRes.rowCount;
   }
 
-  public async notes(toDate: string): Promise<{}[]> {
-    const selectQuery: string = "SELECT id, \"replyId\", \"renoteId\", \"userId\", \"mentions\" FROM public.note WHERE \"createdAt\" < $1 ORDER BY \"createdAt\" DESC";
-    const selectRes = await client.query(selectQuery, [toDate]);
+  public async notes(toDate: string, fromDate: string): Promise<{}[]> {
+    const selectQuery: string = "SELECT id, \"replyId\", \"renoteId\", \"userId\", \"mentions\" FROM public.note WHERE \"createdAt\" < $1 AND \"createdAt\" > $2 ORDER BY \"createdAt\" DESC";
+    const selectRes = await client.query(selectQuery, [toDate, fromDate]);
 
     return selectRes.rows;
   }

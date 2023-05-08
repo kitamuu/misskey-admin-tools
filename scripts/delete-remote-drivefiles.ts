@@ -1,18 +1,18 @@
 import { Dao } from "../src/dao";
-import { formattedDate, elapsedTime } from "../src/libs";
+import { toDate, elapsedTime } from "../src/libs";
 
 const dao: Dao = new Dao();
 const delimiterNumForLog: int = 10000;
 let deleteCount: int = 0;
 
-console.log(`Will delete remote drive_file records before ${formattedDate}.`);
+console.log(`Will delete remote drive_file records before ${toDate}.`);
 
 (async () => {
   await dao.connect();
 
   const protectedUserIds: string[] = await dao.protectedUserIds();
 
-  const driveFiles: {}[] = await dao.driveFiles(formattedDate);
+  const driveFiles: {}[] = await dao.driveFiles(toDate);
   console.log(`Fetched ${driveFiles.length} records in ${elapsedTime()}.`);
 
   let index: int = 0;

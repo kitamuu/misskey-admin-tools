@@ -1,19 +1,18 @@
 import { Dao } from "../src/dao";
-import { formattedDate, elapsedTime } from "../src/libs";
+import { toDate, fromDate, elapsedTime } from "../src/libs";
 
 const dao: Dao = new Dao();
 const delimiterNumForLog: int = 10000;
 let deleteCount: int = 0;
 let protectedNoteIds: string[] = [];
 
-console.log(`Will delete remote notes before ${formattedDate}.`);
-
+console.log(`Will delete remote notes in ${fromDate} ~ ${toDate}.`);
 (async () => {
   await dao.connect();
 
   const protectedUserIds: string[] = await dao.protectedUserIds();
 
-  const notes: {}[] = await dao.notes(formattedDate);
+  const notes: {}[] = await dao.notes(toDate, fromDate);
   console.log(`Fetched ${notes.length} notes in ${elapsedTime()}.`);
 
   let index: int = 0;
