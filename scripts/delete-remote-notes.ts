@@ -10,7 +10,11 @@ console.log(`Will delete remote notes in ${fromDate} ~ ${toDate}.`);
   await dao.connect();
 
   const protectedUserIds: string[] = await dao.protectedUserIds();
-  let protectedNoteIds: string[] = await dao.clippedNoteIds(); // クリップされたNoteは残す
+
+  // クリップされたNoteは残す
+  let protectedNoteIds: string[] = await dao.clippedNoteIds();
+  // 削除指定期間より未来からのReplyとRenoteおよび、自鯖民がリアクションしたNoteを保護
+  protectedNoteIds = Array.from(new Set(protectedNoteIds.concat(await dao.recentlyReactedNoteIds(toDate, fromDate))));
 
   const notes: {}[] = await dao.notes(toDate, fromDate);
   console.log(`Fetched ${notes.length} notes in ${elapsedTime()}.`);

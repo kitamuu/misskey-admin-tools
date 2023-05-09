@@ -11,13 +11,18 @@ export class Dao {
     await client.end();
   }
 
-  public async protectedUserIds(): Promise<string[]> {
+  public async localUserIds(): Promise<string[]> {
     const userQuery: string = "SELECT id FROM public.user WHERE host is null";
+    const userRes = await client.query(userQuery);
+
+    return userRes.rows.map((row) => row.id);
+  }
+
+  public async protectedUserIds(): Promise<string[]> {
     const followeeQuery: string = "SELECT \"followeeId\" FROM public.following";
 
     // 自鯖のアカウント
-    const userRes = await client.query(userQuery);
-    const localUserIds: string[] = userRes.rows.map((row) => row.id);
+    const localUserIds: string[] = await this.localUserIds();
 
     // 自鯖の人たちがフォローしているアカウント
     const followeeRes = await client.query(followeeQuery);
@@ -58,6 +63,27 @@ export class Dao {
     const selectRes = await client.query(selectQuery);
 
     return selectRes.rows.map((row) => row.noteId);
+  }
+
+  public async recentlyReactedNoteIds(toDate: string, fromDate: string): Promise<string[]> {
+    const replyQuery: string = "SELECT \"replyId\" FROM public.note WHERE \"userId\" = any($1::varchar[]) AND \"createdAt\" >= $2 AND \"replyId\" is not null";
+    const renoteQuery: string = "SELECT \"renoteId\" FROM public.note WHERE \"userId\" = any($1::varchar[]) AND \"createdAt\" >= $2 AND \"renoteId\" is not null";
+    const reactionQuery: string = "SELECT \"noteId\" FROM public.note_reaction WHERE \"userId\" = any($1::varchar[]) AND \"createdAt\" >= $2";
+
+    const localUserIds: string[] = await this.localUserIds();
+
+    // 削除対象期間内のNoteは別で取るので、ここでは対象期間より未来を取得対象とする
+    const replyRes = await client.query({ text: replyQuery, values: [localUserIds, toDate] });
+    const relplyIds: string[] = replyRes.rows.map((row) => row.replyId);
+
+    const renoteRes = await client.query({ text: renoteQuery, values: [localUserIds, toDate] });
+    const renoteIds: string[] = renoteRes.rows.map((row) => row.renoteId);
+
+    // リアクションは削除期間の開始日よりも先の日付だけ抽出
+    const reactionRes = await client.query({ text: reactionQuery, values: [localUserIds, fromDate] });
+    const reactionIds: string[] = reactionRes.rows.map((row) => row.noteId);
+
+    return Array.from(new Set(relplyIds.concat(renoteIds, reactionIds)));
   }
 
   public async notes(toDate: string, fromDate: string): Promise<{}[]> {
