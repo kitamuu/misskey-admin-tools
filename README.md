@@ -26,7 +26,7 @@ misskey v13が動いている環境であれば大丈夫なはず
   - Run `pnpx tsx scripts/delete-remote-user-charts.ts`
 
 - 指定年月日より過去n日分の自鯖のアカウントとそれらがフォローしているアカウントのNote、
-およびRenoteしたNoteとReply、mentionがあったNoteを残して消します
+およびRenoteしたNoteとReply、mentionがあったNote、クリップ済みのNoteを残して消します
 （※指定年月日より未来からRenote、ReplyされたNoteは消えちゃう）:
 
   - Run `pnpx tsx scripts/delete-remote-notes.ts yyyy-MM-dd n`

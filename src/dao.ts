@@ -47,10 +47,17 @@ export class Dao {
   public async deleteUnusedUsers(): Promise<int> {
     const deleteQuery: string = "DELETE FROM public.user WHERE NOT(id = any($1::varchar[])) AND \"lastFetchedAt\" < $2";
     const today: Date = new Date();
-    const toDate: string = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
+    const toDate: string = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()).toLocaleDateString('sv-SE');
     const protectedIds: string[] = await this.protectedUserIds();
     const deleteRes = await client.query({ text: deleteQuery, values: [protectedIds, toDate] });
     return deleteRes.rowCount;
+  }
+
+  public async clippedNoteIds(): Promise<string[]> {
+    const selectQuery: string = "SELECT \"noteId\" FROM public.clip_note";
+    const selectRes = await client.query(selectQuery);
+
+    return selectRes.rows.map((row) => row.noteId);
   }
 
   public async notes(toDate: string, fromDate: string): Promise<{}[]> {
