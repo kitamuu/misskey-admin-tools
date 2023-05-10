@@ -31,7 +31,7 @@ misskey v13が動いている環境であれば大丈夫なはず
 
   - Run `pnpx tsx scripts/delete-remote-notes.ts yyyy-MM-dd n`
 
-- 引数の指定がない場合は実行日の3ヶ月前から過去30日分を消します
+- 引数の指定がない場合は実行日の3ヶ月前から過去31日分を消します
 
   - Run `pnpx tsx scripts/delete-remote-notes.ts`
 

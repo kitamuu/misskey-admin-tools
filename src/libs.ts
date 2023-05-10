@@ -18,7 +18,7 @@ export const fromDate: string = (() => {
   if (priodDays) {
     return new Date(_toDate.getFullYear(), _toDate.getMonth(), _toDate.getDate() - priodDays).toLocaleDateString('sv-SE');
   } else {
-    return new Date(_toDate.getFullYear(), _toDate.getMonth(), _toDate.getDate() - 30).toLocaleDateString('sv-SE');
+    return new Date(_toDate.getFullYear(), _toDate.getMonth(), _toDate.getDate() - 31).toLocaleDateString('sv-SE');
   }
 })();
 
