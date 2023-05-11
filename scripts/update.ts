@@ -20,7 +20,7 @@ console.log(massage);
 massage = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; pnpm run clean"').toString();
 console.log(massage);
 
-massage = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; NODE_ENV=production pnpm run build"').toString();
+massage = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; NODE_ENV=production NODE_OPTIONS=--max_old_space_size=2048 pnpm run build"').toString();
 console.log(massage);
 
 massage = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; pnpm run migrate"').toString();
