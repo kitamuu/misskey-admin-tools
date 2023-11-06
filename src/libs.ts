@@ -1,6 +1,7 @@
 const today: Date = new Date();
 const targetDay: string = process.argv[2];
 const priodDays: number = process.argv[3];
+const TIME2000 = 946684800000;
 
 export const toDate: string = (() => {
   if (targetDay) {
@@ -21,6 +22,11 @@ export const fromDate: string = (() => {
     return new Date(_toDate.getFullYear(), _toDate.getMonth(), _toDate.getDate() - 31).toLocaleDateString('sv-SE');
   }
 })();
+
+export const genIdTime: string = (date: string) => {
+  const t = Date.parse(date);
+  return (t - TIME2000).toString(36).padStart(8, '0').slice(-8);
+};
 
 export const elapsedTime: string = () => {
   const ms = new Date() - today;

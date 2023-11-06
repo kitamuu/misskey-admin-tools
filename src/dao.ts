@@ -1,4 +1,5 @@
 import { client } from "./data-source";
+import { genIdTime } from "./libs";
 
 export class Dao {
   constructor(){}
@@ -39,8 +40,8 @@ export class Dao {
   }
 
   public async driveFiles(toDate: string): Promise<{}[]> {
-    const selectQuery: string = "SELECT id, \"userId\" FROM public.drive_file WHERE \"createdAt\" < $1";
-    const selectRes = await client.query(selectQuery, [toDate]);
+    const selectQuery: string = "SELECT id, \"userId\" FROM public.drive_file WHERE \"id\" < $1";
+    const selectRes = await client.query(selectQuery, [genIdTime(toDate)]);
 
     return selectRes.rows;
   }
@@ -66,29 +67,29 @@ export class Dao {
   }
 
   public async recentlyReactedNoteIds(toDate: string, fromDate: string): Promise<string[]> {
-    const replyQuery: string = "SELECT \"replyId\" FROM public.note WHERE \"userId\" = any($1::varchar[]) AND \"createdAt\" >= $2 AND \"replyId\" is not null";
-    const renoteQuery: string = "SELECT \"renoteId\" FROM public.note WHERE \"userId\" = any($1::varchar[]) AND \"createdAt\" >= $2 AND \"renoteId\" is not null";
-    const reactionQuery: string = "SELECT \"noteId\" FROM public.note_reaction WHERE \"userId\" = any($1::varchar[]) AND \"createdAt\" >= $2";
+    const replyQuery: string = "SELECT \"replyId\" FROM public.note WHERE \"userId\" = any($1::varchar[]) AND \"id\" >= $2 AND \"replyId\" is not null";
+    const renoteQuery: string = "SELECT \"renoteId\" FROM public.note WHERE \"userId\" = any($1::varchar[]) AND \"id\" >= $2 AND \"renoteId\" is not null";
+    const reactionQuery: string = "SELECT \"noteId\" FROM public.note_reaction WHERE \"userId\" = any($1::varchar[]) AND \"id\" >= $2";
 
     const localUserIds: string[] = await this.localUserIds();
 
     // 削除対象期間内のNoteは別で取るので、ここでは対象期間より未来を取得対象とする
-    const replyRes = await client.query({ text: replyQuery, values: [localUserIds, toDate] });
+    const replyRes = await client.query({ text: replyQuery, values: [localUserIds, genIdTime(toDate)] });
     const relplyIds: string[] = replyRes.rows.map((row) => row.replyId);
 
-    const renoteRes = await client.query({ text: renoteQuery, values: [localUserIds, toDate] });
+    const renoteRes = await client.query({ text: renoteQuery, values: [localUserIds, genIdTime(toDate)] });
     const renoteIds: string[] = renoteRes.rows.map((row) => row.renoteId);
 
     // リアクションは削除期間の開始日よりも先の日付だけ抽出
-    const reactionRes = await client.query({ text: reactionQuery, values: [localUserIds, fromDate] });
+    const reactionRes = await client.query({ text: reactionQuery, values: [localUserIds, genIdTime(fromDate)] });
     const reactionIds: string[] = reactionRes.rows.map((row) => row.noteId);
 
     return Array.from(new Set(relplyIds.concat(renoteIds, reactionIds)));
   }
 
   public async notes(toDate: string, fromDate: string): Promise<{}[]> {
-    const selectQuery: string = "SELECT id, \"replyId\", \"renoteId\", \"userId\", \"mentions\" FROM public.note WHERE \"createdAt\" < $1 AND \"createdAt\" > $2 ORDER BY \"createdAt\" DESC";
-    const selectRes = await client.query(selectQuery, [toDate, fromDate]);
+    const selectQuery: string = "SELECT id, \"replyId\", \"renoteId\", \"userId\", \"mentions\" FROM public.note WHERE \"id\" < $1 AND \"id\" > $2 ORDER BY \"id\" DESC";
+    const selectRes = await client.query(selectQuery, [genIdTime(toDate), genIdTime(fromDate)]);
 
     return selectRes.rows;
   }

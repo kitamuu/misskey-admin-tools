@@ -4,11 +4,12 @@
 
 ## Dependencies:
 
-misskey v13が動いている環境であれば大丈夫なはず
+misskey v13(or v2023.xx.x)が動いている環境であれば大丈夫なはず
+configのID generationの設定が`aid`または`aidx`のものしか対応してません
 
 ## Setup:
 
-1. misskeyから`.config/default.yml`を当リポジトリの`.config/`内にコピー
+1. [misskey](https://github.com/misskey-dev/misskey)から`.config/default.yml`を当リポジトリの`.config/`内にコピー
 2. Run `pnpm install --frozen-lockfile`
 
 ## Functions:
