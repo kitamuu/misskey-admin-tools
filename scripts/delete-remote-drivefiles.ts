@@ -13,7 +13,7 @@ console.log(`Will delete remote drive_file records before ${toDate}.`);
   const protectedUserIds: string[] = await dao.protectedUserIds();
 
   const driveFiles: {}[] = await dao.driveFiles(toDate);
-  console.log(`Fetched ${driveFiles.length} records in ${elapsedTime()}.`);
+  console.log(`${driveFiles.length} records fetched in ${elapsedTime()}.`);
 
   let index: int = 0;
   for (const driveFile of driveFiles) {
@@ -28,7 +28,7 @@ console.log(`Will delete remote drive_file records before ${toDate}.`);
     }
 
     if(index % delimiterNumForLog == 0){
-      console.log(`${deleteCount} records deleted in ${elapsedTime()}. Still deleting...`);
+      console.log(`${deleteCount} records deleted in ${elapsedTime()}. Still running...`);
     }
   }
   console.log(`Finished. ${deleteCount} records deleted in ${elapsedTime()}.`);

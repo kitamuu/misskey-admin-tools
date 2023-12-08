@@ -17,7 +17,7 @@ console.log(`Will delete remote notes in ${fromDate} ~ ${toDate}.`);
   protectedNoteIds = Array.from(new Set(protectedNoteIds.concat(await dao.recentlyReactedNoteIds(toDate, fromDate))));
 
   const notes: {}[] = await dao.notes(toDate, fromDate);
-  console.log(`Fetched ${notes.length} notes in ${elapsedTime()}.`);
+  console.log(`${notes.length} notes fetched in ${elapsedTime()}.`);
 
   let index: int = 0;
   for (const note of notes) {
@@ -45,7 +45,7 @@ console.log(`Will delete remote notes in ${fromDate} ~ ${toDate}.`);
         deleteCount++;
 
         if(deleteCount % delimiterNumForLog == 0) {
-          console.log(`${deleteCount} notes deleted in ${elapsedTime()}. Still deleting...`);
+          console.log(`${deleteCount} notes deleted in ${elapsedTime()}. Still running...`);
         }
       }
     }
