@@ -11,7 +11,7 @@
 ## Setup:
 
 1. [misskey](https://github.com/misskey-dev/misskey)から`.config/default.yml`を当リポジトリの`.config/`内にコピー
-2. Run `pnpm install --frozen-lockfile` (何かしらのバージョンが古い人は`pnpm-lock.yaml`を消して'pnpm install')
+2. Run `pnpm install --frozen-lockfile` (何かしらのバージョンが古い人は`pnpm-lock.yaml`を消して`pnpm install`)
 
 ## Functions:
 
