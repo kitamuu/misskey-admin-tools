@@ -4,19 +4,20 @@
 
 ## Dependencies:
 
-misskey v13(or v2023.xx.x)が動いている環境であれば大丈夫なはず
-configのID generationの設定が`aid`または`aidx`のものしか対応してません
+- pnpm v8.13.1^
+- misskey v2023.12.2^が動いている環境であれば大丈夫なはず
+- configのID generationの設定が`aid`または`aidx`のものしか対応してません
 
 ## Setup:
 
 1. [misskey](https://github.com/misskey-dev/misskey)から`.config/default.yml`を当リポジトリの`.config/`内にコピー
-2. Run `pnpm install --frozen-lockfile`
+2. Run `pnpm install --frozen-lockfile` (何かしらのバージョンが古い人は`pnpm-lock.yaml`を消して'pnpm install')
 
 ## Functions:
 
 - アップデートツール([ここ](https://misskey-hub.net/docs/install/ubuntu-manual.html)に書いてある手順で環境構築した人用):
 
-  - Run `sudo pnpx tsx scripts/update.ts 13.x.x`
+  - Run `sudo pnpx tsx scripts/update.ts 202y.M.n`
 
 - あまり使われてなさそうな(lastFetchedAtが一年以上前の)userのレコードを削除:
 
