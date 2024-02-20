@@ -27,6 +27,10 @@
 
   - Run `pnpx tsx scripts/delete-remote-user-charts.ts`
 
+- ブロックしたサーバーのユーザーからの通知を削除:
+
+  - Run `pnpx tsx scripts/delete-notifications-by-blocked-servers.ts`
+
 - 指定年月日より過去n日分の投稿(Note)を消します。
 (自鯖のアカウントのNoteとRenoteしたNote、Reply先のNote、mentionがあったNote、クリップ済みのNote、リアクションしたNote
 および、自鯖のアカウントがフォローしているアカウントのNoteは残します)：
@@ -45,3 +49,4 @@
 - 引数の指定がない場合は実行日の3ヶ月前から過去分を消します
 
   - Run `pnpx tsx scripts/delete-remote-drivefiles.ts`
+

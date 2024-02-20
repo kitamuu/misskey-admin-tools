@@ -2,6 +2,12 @@
 # Misskey configuration
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+#   ┌─────┐
+#───┘ URL └─────────────────────────────────────────────────────
+
+# Final accessible URL seen by a user.
+url: https://example.com/
+
 #   ┌──────────────────────────┐
 #───┘ PostgreSQL configuration └────────────────────────────────
 
@@ -15,3 +21,11 @@ db:
   # Auth
   user: example-misskey-user
   pass: example-misskey-pass
+
+#   ┌─────────────────────┐
+#───┘ Redis configuration └─────────────────────────────────────
+
+redis:
+  host: localhost
+  port: 6379
+

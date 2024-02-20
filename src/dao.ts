@@ -32,6 +32,19 @@ export class Dao {
     return Array.from(new Set(localUserIds.concat(followeeIds)));
   }
 
+  public async blockedUserIds(): Promise<string[]> {
+    const query: string = "SELECT id FROM public.user WHERE host = any($1::varchar[])";
+    const blockedHosts: string[] = await this.blockedHosts();
+    const userRes = await client.query({ text: query, values: [blockedHosts] });
+    return userRes.rows.map((row) => row.id);
+  }
+
+  public async blockedHosts(): Promise<string[]> {
+    const res = await client.query("SELECT \"blockedHosts\" FROM public.meta");
+
+    return res.rows[0].blockedHosts;
+  }
+
   public async isNotAvatarOrBanner(driveFileId: string): Promise<boolean> {
     const checkQuery: string = "SELECT id FROM public.user WHERE \"avatarId\" = $1 OR \"bannerId\" = $2";
     const checkRes = await client.query(checkQuery, [driveFileId, driveFileId]);
@@ -133,3 +146,4 @@ export class Dao {
     return deleteRes.rowCount;
   }
 }
+

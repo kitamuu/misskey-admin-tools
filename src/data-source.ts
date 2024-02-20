@@ -12,3 +12,4 @@ export const client = new Client({
   password: config.db.pass,
   port: config.db.port,
 });
+
