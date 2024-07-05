@@ -1,31 +1,15 @@
 const today: Date = new Date();
-const targetDay: string = process.argv[2];
-const priodDays: number = process.argv[3];
-const TIME2000 = 946684800000;
-
-export const toDate: string = (() => {
-  if (targetDay) {
-    if (targetDay.match(/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/) === null) {
-      process.exit(1);
-    }
-    return targetDay;
-  } else {
-    return new Date(today.getFullYear(), today.getMonth() - 3, today.getDate()).toLocaleDateString('sv-SE');
-  }
-})();
-
-export const fromDate: string = (() => {
-  const _toDate: Date = new Date(toDate);
-  if (priodDays) {
-    return new Date(_toDate.getFullYear(), _toDate.getMonth(), _toDate.getDate() - priodDays).toLocaleDateString('sv-SE');
-  } else {
-    return new Date(_toDate.getFullYear(), _toDate.getMonth(), _toDate.getDate() - 31).toLocaleDateString('sv-SE');
-  }
-})();
+const TIME2000 = 946684800000 + (9 * 60 * 60 * 1000); // JST
 
 export const genIdTime: string = (date: string) => {
   const t = Date.parse(date);
   return (t - TIME2000).toString(36).padStart(8, '0').slice(-8);
+};
+
+export const parseId: Date = (id: string) => {
+  const time = parseInt(id.slice(0, 8), 36) + TIME2000;
+  const date = new Date(time);
+  return date.toLocaleDateString('sv-SE') + ' ' + date.toLocaleTimeString('ja-JP', { hour12:false });
 };
 
 export const elapsedTime: string = () => {

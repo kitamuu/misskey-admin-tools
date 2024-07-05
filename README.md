@@ -50,3 +50,8 @@
 
   - Run `pnpx tsx scripts/delete-remote-drivefiles.ts`
 
+- ノートの検索（search_local.tsは自鯖のノートのみ対象）:
+
+  - Run `pnpx tsx scripts/search.ts 検索したい言葉`
+  - Run `pnpx tsx scripts/search_local.ts 検索したい言葉`
+

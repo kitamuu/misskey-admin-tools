@@ -1,9 +1,5 @@
-import { load } from 'js-yaml';
-import { readFileSync } from 'fs';
+import { config } from "./config";
 const { Client } = require('pg');
-
-// バッチ実行時のカレントからの相対パス
-const config = load(readFileSync('.config/default.yml', 'utf8'));
 
 export const client = new Client({
   user: config.db.user,

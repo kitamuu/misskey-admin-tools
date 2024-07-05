@@ -1,5 +1,6 @@
 import { Dao } from "../src/dao";
-import { toDate, fromDate, elapsedTime } from "../src/libs";
+import { toDate, fromDate } from "../src/arg-date";
+import { elapsedTime } from "../src/libs";
 
 const dao: Dao = new Dao();
 const delimiterNumForLog: int = 10000;

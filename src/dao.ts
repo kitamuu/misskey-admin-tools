@@ -107,6 +107,16 @@ export class Dao {
     return selectRes.rows;
   }
 
+  public async search(text: string, is_local?: boolean): Promise<{}[]> {
+    const host_condition = is_local ? "AND \"user\".\"host\" is null" : "";
+    const selectQuery: string = `SELECT note.id, \"note\".\"text\", \"user\".\"name\"
+                                 FROM public.note INNER JOIN public.user ON \"user\".id = \"note\".\"userId\"
+                                 WHERE \"note\".\"text\" LIKE '%' || $1 || '%' ${host_condition} ORDER BY \"note\".id DESC`;
+    const selectRes = await client.query(selectQuery, [text]);
+
+    return selectRes.rows;
+  }
+
   public async deleteNote(id: string): Promise<void> {
     await client.query("DELETE FROM public.note WHERE id = $1", [id]);
   }
