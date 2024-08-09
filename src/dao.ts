@@ -121,6 +121,11 @@ export class Dao {
     await client.query("DELETE FROM public.note WHERE id = $1", [id]);
   }
 
+  public async batchDeleteNotes(ids: string[]): Promise<int> {
+    const deleteRes = await client.query("DELETE FROM public.note WHERE id = any($1::varchar[])", [ids]);
+    return deleteRes.rowCount;
+  }
+
   public async deleteChartPerUserDrive(protectedUserIds: string[]): Promise<int> {
     const deleteQuery: string = "DELETE FROM public.__chart__per_user_drive WHERE NOT(\"group\" = any($1::varchar[]))";
     const deleteRes = await client.query({ text: deleteQuery, values: [protectedUserIds] });

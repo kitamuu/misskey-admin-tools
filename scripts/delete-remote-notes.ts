@@ -1,9 +1,11 @@
 import { Dao } from "../src/dao";
 import { toDate, fromDate } from "../src/arg-date";
 import { elapsedTime } from "../src/libs";
+const lodash = require('lodash');
 
 const dao: Dao = new Dao();
-const delimiterNumForLog: int = 10000;
+const delimiterNumForLog: int = 10;
+const batchCount: int = 1000;
 let deleteCount: int = 0;
 
 console.log(`Will delete remote notes in ${fromDate} ~ ${toDate}.`);
@@ -20,10 +22,9 @@ console.log(`Will delete remote notes in ${fromDate} ~ ${toDate}.`);
   const notes: {}[] = await dao.notes(toDate, fromDate);
   console.log(`${notes.length} notes fetched in ${elapsedTime()}.`);
 
-  let index: int = 0;
-  for (const note of notes) {
-    index++;
+  const deleteNoteIds: string[] = [];
 
+  for (const note of notes) {
     if (protectedUserIds.includes(note.userId)) {
       if (note.replyId) {
         protectedNoteIds.push(note.replyId);
@@ -42,13 +43,20 @@ console.log(`Will delete remote notes in ${fromDate} ~ ${toDate}.`);
       } else if (note.mentions.filter(id => protectedUserIds.includes(id)).length > 0) {
         // nop
       } else {
-        await dao.deleteNote(note.id);
-        deleteCount++;
-
-        if(deleteCount % delimiterNumForLog == 0) {
-          console.log(`${deleteCount} notes deleted in ${elapsedTime()}. Still running...`);
-        }
+        deleteNoteIds.push(note.id)
       }
+    }
+  }
+  console.log(`will delete ${deleteNoteIds.length} notes.`);
+
+  const chunkedDeleteNoteIds = lodash.chunk(deleteNoteIds, batchCount);
+  let index: int = 0;
+
+  for (const devidedDeleteNoteIds of chunkedDeleteNoteIds) {
+    index++;
+    deleteCount += await dao.batchDeleteNotes(devidedDeleteNoteIds);
+    if(index % delimiterNumForLog == 0) {
+      console.log(`${deleteCount} notes deleted in ${elapsedTime()}. Still running...`);
     }
   }
   console.log(`Finished. ${deleteCount} notes deleted in ${elapsedTime()}.`);
