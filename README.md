@@ -4,7 +4,7 @@
 
 ## Dependencies:
 
-- pnpm v8.13.1^
+- pnpm 10.10.0^
 - misskey v2023.12.2^が動いている環境であれば大丈夫なはず
 - configのID generationの設定が`aid`または`aidx`のものしか対応してません
 
