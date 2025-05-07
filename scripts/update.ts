@@ -20,6 +20,9 @@ console.log(message);
 message = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; pnpm run clean"').toString();
 console.log(message);
 
+message = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; pnpm store prune"').toString();
+console.log(message);
+
 message = execSync('sudo -u misskey sh -c "cd ~misskey/misskey; NODE_ENV=production NODE_OPTIONS=--max_old_space_size=2048 pnpm run build"').toString();
 console.log(message);
 
